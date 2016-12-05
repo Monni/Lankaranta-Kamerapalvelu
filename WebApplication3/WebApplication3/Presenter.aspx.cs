@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Drawing;
 
 namespace WebApplication3
 {
@@ -13,6 +14,8 @@ namespace WebApplication3
     {
         DataSet ds = new DataSet();
         MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
+
+        bool liveImageBtnSelected;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,7 +28,13 @@ namespace WebApplication3
                 // Populate gridview on the right with every picture
                 getGridviewFromDBImages(0);
             }
+            // Check the state of live-button and save to boolean
+            if (ViewState["liveImageBtnSelected"] != null)
+            {
+                liveImageBtnSelected = bool.Parse(ViewState["liveImageBtnSelected"].ToString());
+            }
             
+
         }
 
 
@@ -72,10 +81,12 @@ namespace WebApplication3
             {
                 if (((CheckBox)row.FindControl("gridViewCheckBox")).Checked)
                 {
-                    System.Diagnostics.Debug.WriteLine("paskaa");
-                    string imagepath = gridView.DataKeys[row.RowIndex].Value.ToString();
+                    
+                    string datetime = gridView.DataKeys[row.RowIndex].Values["datetime"].ToString();
+                    string imagepath = gridView.DataKeys[row.RowIndex].Values["imagepath"].ToString();
                     mainImage.ImageUrl = imagepath;
-                    msg.Text = imagepath;
+                    TitleDatetime.Text = datetime;
+                    System.Diagnostics.Debug.WriteLine("paskaa");
 
 
                     ///
@@ -108,6 +119,15 @@ namespace WebApplication3
 
 
         protected void UpdateTimer_Tick(object sender, EventArgs e) {
+            if (liveImageBtnSelected)
+            {
+                Tick();
+            }
+        }
+
+        // If needed to call programmatically
+        protected void Tick()
+        {
             string imagepath = getImagepathFromDBLatest();
             mainImage.ImageUrl = imagepath;
         }
@@ -191,11 +211,28 @@ namespace WebApplication3
                 }
             }
         }
+        protected void liveImageBtn_Click(object sender, EventArgs e)
+        {
+            if (!liveImageBtnSelected || liveImageBtnSelected == null)
+            {
+                liveImageBtnSelected = true;
+                ViewState["liveImageBtnSelected"] = "true";
+                System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
+                liveImageBtn.BackColor = Color.Green;
+                // Instantly update picture to latest
+                Tick();
+            } else if (liveImageBtnSelected)
+            {
+                liveImageBtnSelected = false;
+                ViewState["liveImageBtnSelected"] = "false";
+                liveImageBtn.BackColor = Color.Gray;
+                System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
+            }
+        }
 
+        protected void sendEmailBtn_Click(object sender, EventArgs e)
+        {
 
-
-
-
-
+        }
     }
 }

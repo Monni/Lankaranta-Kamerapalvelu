@@ -85,6 +85,15 @@ namespace WebApplication3 {
         protected global::System.Web.UI.WebControls.GridView gridView;
         
         /// <summary>
+        /// liveImageBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button liveImageBtn;
+        
+        /// <summary>
         /// allImageBtn control.
         /// </summary>
         /// <remarks>
@@ -119,5 +128,14 @@ namespace WebApplication3 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button delImageBtn;
+        
+        /// <summary>
+        /// sendEmailBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button sendEmailBtn;
     }
 }

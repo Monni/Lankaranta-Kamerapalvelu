@@ -1,0 +1,47 @@
+﻿body {
+    margin:0; /* This is used to reset any browser-default margins */
+}
+
+div.wrapper {
+    width: 99vw;
+    height: 97vh;
+    position: relative;
+}
+
+div.title {
+    position:static;
+    top:0;
+    width:100%;
+    height:10%;
+    border-style:dashed;
+}
+
+div.main {
+    position: absolute;
+    width: 69%;
+    height: 69%;
+    border-style: solid;
+}
+
+div.right {
+    position: absolute;
+    right:0;
+    width: 29%;
+    height: 69%;
+    border-style: dashed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+div.bottom {
+    position: absolute;
+    bottom:0;
+    width: 100%;
+    height: 17%;
+    border-style: dashed;
+}
+
+.mybtn {
+    width:20%;
+    height:100%;
+}

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="lankarantaModelStoreContainer" CdmEntityContainer="lankarantaEntities">
+    <EntitySetMapping Name="images">
+      <EntityTypeMapping TypeName="lankarantaModel.ImageModel">
+        <MappingFragment StoreEntitySet="images">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="datetime" ColumnName="datetime" />
+          <ScalarProperty Name="imagepath" ColumnName="imagepath" />
+          <ScalarProperty Name="movement" ColumnName="movement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,51 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="WebApplication3.MasterPage" %>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.kinetic.min.js"></script>
+    <script src="js/jquery.smoothTouchScroll.min.js"></script>
+
+<head runat="server">
+    <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
+    <title>Miikan master pöjö</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="wrapper">
+
+            <div class="title">
+                <asp:ContentPlaceHolder ID="TitlePlaceHolder" runat="server">
+                    <h1>Lankaranta</h1>
+                </asp:ContentPlaceHolder>
+            </div>
+
+            <div class="main">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+                </asp:ContentPlaceHolder>
+            </div>
+
+            <div class="right">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+
+                </asp:ContentPlaceHolder>
+            </div>
+            
+            <div class="bottom">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+
+                </asp:ContentPlaceHolder>
+            </div> 
+              
+        </div>
+         
+
+</form>
+</body>
+</html>

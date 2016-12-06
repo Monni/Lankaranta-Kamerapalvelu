@@ -7,11 +7,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace WebApplication3
 {
     public partial class Presenter : System.Web.UI.Page
     {
+        // Backend has all main functionality
+        Backend backend = new Backend();
         DataSet ds = new DataSet();
         MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
 
@@ -19,14 +22,17 @@ namespace WebApplication3
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             if (!IsPostBack)
             {
+
                 // Populate central image with newest picture
-                string imagepath = getImagepathFromDBLatest();
+                string imagepath = backend.getImagepathFromDBLatest();
                 mainImage.ImageUrl = imagepath;
 
                 // Populate gridview on the right with every picture
-                getGridviewFromDBImages(0);
+                gridView.DataSource = backend.getDataTableFromDBImages(0);
+                gridView.DataBind();
             }
             // Check the state of live-button and save to boolean
             if (ViewState["liveImageBtnSelected"] != null)
@@ -39,38 +45,43 @@ namespace WebApplication3
 
 
 
+        // Delete selected image
         protected void delImageBtn_Click(object sender, EventArgs e)
         {
-         //   MySqlCommand command = conn.CreateCommand();
-        //    command.CommandText = "DELETE FROM `lankaranta`.`images` WHERE ID=?image";
-            //    command.Parameters.Add("?image", MySqlDbType.Int32).Value = VALITTU IMAGEID;
-     //       conn.Open();
-            // tässä jtn
-        //    conn.Close();
+            if ((ViewState["selectedImageID"] != null) && ViewState["selectedImageImagepath"] != null)
+            {
+                int id = Int32.Parse(ViewState["selectedImageID"].ToString());
+                string imagepath = ViewState["selectedImageImagepath"].ToString();
+                backend.delImageFromDB(id, imagepath);
+            }
+            
         }
 
 
 
-        protected void allImageBtn_Click(object sender, EventArgs e)
-        // Get all pictures
+        // Get all pictures regardless of movement
+        protected void allImageBtn_Click(object sender, EventArgs e)      
         {
-            getGridviewFromDBImages(0);
+            gridView.DataSource = backend.getDataTableFromDBImages(0);
+            gridView.DataBind();
         }
 
 
 
+        // Get pictures where movement detected
         protected void movementImageBtn_Click(object sender, EventArgs e)
-            // If movement detected in picture (movement boolean)
         {
-            getGridviewFromDBImages(1);
+            gridView.DataSource = backend.getDataTableFromDBImages(1);
+            gridView.DataBind();
         }
 
 
 
+        // Get pictures where no movement detected
         protected void noMovementImageBtn_Click(object sender, EventArgs e)
-            // Get all pictures where no movement detected
         {
-            getGridviewFromDBImages(2);
+            gridView.DataSource = backend.getDataTableFromDBImages(2);
+            gridView.DataBind();
         }
 
 
@@ -79,31 +90,39 @@ namespace WebApplication3
         {
             foreach (GridViewRow row in gridView.Rows)
             {
-                if (((CheckBox)row.FindControl("gridViewCheckBox")).Checked)
+                if (row.RowIndex == gridView.SelectedIndex)
                 {
-                    
+                    row.BackColor = Color.Aquamarine;
+                    row.ToolTip = string.Empty;
+
+                    int ID = (int) gridView.DataKeys[row.RowIndex].Values["ID"];
                     string datetime = gridView.DataKeys[row.RowIndex].Values["datetime"].ToString();
                     string imagepath = gridView.DataKeys[row.RowIndex].Values["imagepath"].ToString();
+                    Boolean movement = Convert.ToBoolean(gridView.DataKeys[row.RowIndex].Values["movement"]);
+                    // Save selection data
+                    setSelectedImage(ID, datetime, imagepath, movement);
+
                     mainImage.ImageUrl = imagepath;
-                    TitleDatetime.Text = datetime;
-                    System.Diagnostics.Debug.WriteLine("paskaa");
-
-
-                    ///
-                    //
-                    //
-                    // TODO
-                    // DataKeys tarvitaan myös datetime! ja sitte TitleDatetime -labeliin
-                    //
-                    //
-                    ///
-
-
-
+                    TitleDatetime.Text = "<h2>" + datetime + "</h2>";
+                } else
+                {
+                    row.BackColor = Color.White;
+                    row.ToolTip = "Click to select this row";
                 }
             }
         }
 
+        
+        
+        // Save selected image data to ViewState
+        protected void setSelectedImage(int id, string datetime, string imagepath, Boolean movement)
+        {
+            ViewState["selectedImageID"] = id;
+            ViewState["selectedImageDatetime"] = datetime;
+            ViewState["selectedImageImagepath"] = imagepath;
+            ViewState["selectedImageMovement"] = movement;
+        }
+        
 
 
         protected void gridView_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -112,12 +131,14 @@ namespace WebApplication3
             {
                 e.Row.Attributes["onmouseover"] = "this.style.backgroundColor='aquamarine';";
                 e.Row.Attributes["onmouseout"] = "this.style.backgroundColor='white';";
-                e.Row.ToolTip = "Click last column for selecting this row.";
+                e.Row.ToolTip = "Click to select this row";
+                e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(gridView, "Select$" + e.Row.RowIndex);
             }
         }
 
 
 
+        // Call Tick() from behind a timer
         protected void UpdateTimer_Tick(object sender, EventArgs e) {
             if (liveImageBtnSelected)
             {
@@ -125,99 +146,25 @@ namespace WebApplication3
             }
         }
 
+
+
         // If needed to call programmatically
         protected void Tick()
         {
-            string imagepath = getImagepathFromDBLatest();
+            string imagepath = backend.getImagepathFromDBLatest();
             mainImage.ImageUrl = imagepath;
         }
+        
 
 
-
-        protected string getImagepathFromDBLatest()
-        {
-            // This returns imagepath to latest image
-            string imagepath = "";
-            string sqlcommand = "SELECT * FROM `lankaranta`.`latest`;";
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            MySqlCommand command = conn.CreateCommand();
-            DataSet dataset = new DataSet();
-
-            using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    command.CommandText = sqlcommand;
-                    adapter.SelectCommand = command;
-                    adapter.Fill(dataset);
-                    adapter.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    // Error message here
-                }
-                finally
-                {
-                    connection.Close();
-                    imagepath = dataset.Tables[0].Rows[0]["imagepath"].ToString();
-                }
-            }
-            return imagepath;
-        }
-
-
-
-        protected void getGridviewFromDBImages(int movement)
-        {
-            // This function gets data from lankaranta.images and sets the data as datasource for gridview
-            string sqlcommandAll = "SELECT * FROM `lankaranta`.`images`;"; // Movement = 0
-            string sqlcommandMovement = "SELECT * FROM `lankaranta`.`images` WHERE movement=true;"; // Movement = 1
-            string sqlcommandNoMovement = "SELECT * FROM `lankaranta`.`images` WHERE movement=false;"; // Movement = 2
-   
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            MySqlCommand command = conn.CreateCommand();
-            DataSet dataset = new DataSet();
-
-            if (movement == 0)
-            {
-                command.CommandText = sqlcommandAll;
-            } else if (movement == 1)
-            {
-                command.CommandText = sqlcommandMovement;
-            } else
-            {
-                command.CommandText = sqlcommandNoMovement;
-            }
-
-            using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    adapter.SelectCommand = command;
-                    adapter.Fill(dataset);
-                    adapter.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    // Error message here
-                }
-                finally
-                {
-                    connection.Close();
-                    gridView.DataSource = dataset.Tables[0];
-                    gridView.DataBind();
-                }
-            }
-        }
+        // liveImageBtn clicked, toggle live-state of latest picture
         protected void liveImageBtn_Click(object sender, EventArgs e)
         {
-            if (!liveImageBtnSelected || liveImageBtnSelected == null)
+            if (!liveImageBtnSelected )
             {
                 liveImageBtnSelected = true;
                 ViewState["liveImageBtnSelected"] = "true";
-                System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
+                //System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
                 liveImageBtn.BackColor = Color.Green;
                 // Instantly update picture to latest
                 Tick();
@@ -226,11 +173,31 @@ namespace WebApplication3
                 liveImageBtnSelected = false;
                 ViewState["liveImageBtnSelected"] = "false";
                 liveImageBtn.BackColor = Color.Gray;
-                System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
+                //System.Diagnostics.Debug.WriteLine(liveImageBtnSelected);
             }
         }
 
+
+
+        // Send selected image as email
         protected void sendEmailBtn_Click(object sender, EventArgs e)
+        {
+            if ((ViewState["selectedImageDatetime"] != null) 
+                && (ViewState["selectedImageImagepath"] != null)
+                && (ViewState["selectedImageMovement"] != null))
+            {
+                string datetime = ViewState["selectedImageDatetime"].ToString();
+                string imagepath = ViewState["selectedImageImagepath"].ToString();
+                Boolean movement = Boolean.Parse(ViewState["selectedImageMovement"].ToString());
+                // Call backend -function
+                backend.sendSelectedImageToEmail(datetime, imagepath, movement);
+                
+                
+            }
+
+        }
+
+        protected void imgSelect_Click(object sender, ImageClickEventArgs e)
         {
 
         }

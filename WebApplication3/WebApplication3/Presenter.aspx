@@ -1,10 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Presenter.aspx.cs" Inherits="WebApplication3.Presenter" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Presenter.aspx.cs" Inherits="WebApplication3.Presenter" Async="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 
 <asp:Content ID="TitleContent" ContentPlaceHolderID="TitlePlaceHolder" runat="server">
-    <asp:Label ID="MainTitle" Text="<h1>Lankaranta</h1>" runat="server"></asp:Label>
+    <asp:Label ID="MainTitle" Text="<h1>Lankaranta   </h1>" runat="server"></asp:Label>
     <asp:Label ID="TitleDatetime" Text="" runat="server"></asp:Label>
     </asp:Content>
 
@@ -26,8 +26,16 @@
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
-    <asp:GridView ID="gridView" runat="server" AutoGenerateColumns="false" DataKeyNames="datetime, imagepath" OnSelectedIndexChanged="gridView_SelectedIndexChanged" OnRowDataBound="gridView_RowDataBound">
+    <asp:GridView
+        ID="gridView"
+        runat="server"
+        AutoGenerateColumns="false"
+        ShowHeader="false"
+        DataKeyNames="ID, datetime, imagepath, movement"
+        OnSelectedIndexChanged="gridView_SelectedIndexChanged"
+        OnRowDataBound="gridView_RowDataBound">
         <Columns>
+
             <asp:BoundField DataField="ID" Visible="false" />
             <asp:BoundField DataField="datetime" />
             <asp:BoundField DataField="imagepath" Visible="false" />
@@ -36,17 +44,17 @@
                 ControlStyle-Height="100%"
                 ControlStyle-Width="100%">
             </asp:ImageField>
-
-            <asp:TemplateField>
+            
+            <asp:TemplateField Visible="false">
                 <ItemTemplate>
-                    <asp:CheckBox ID="gridViewCheckBox" runat="server" />
+                    <asp:ImageButton ID="imgSelect" OnClick="imgSelect_Click" runat="server" Visible="false" CommandName="Select" />
                 </ItemTemplate>
             </asp:TemplateField>
-
-            <asp:ButtonField Text="Select" CommandName="Select" ItemStyle-Width="30" />
+            <asp:ButtonField CommandName="Select" ItemStyle-Width="0"  />
 
         </Columns>
     </asp:GridView>
+     <asp:LinkButton ID="lnkDummy" runat="server"></asp:LinkButton>
 </asp:Content>
 
 

@@ -31,10 +31,11 @@ namespace WebApplication3
                         if (FileUploadControl.PostedFile.ContentLength < 1024000)
                         {
                             string filename = Path.GetFileName(FileUploadControl.FileName);
+                            Boolean movement = Boolean.Parse(movementRadioButton.SelectedValue);
                             FileUploadControl.SaveAs(Server.MapPath("~/Uploads/") + filename);
                             StatusLabel.Text = "Upload status: File uploaded!";
                             // Open DataBase connection and send to DB
-                            sendToDB("~/Uploads/" + filename);
+                            sendToDB("~/Uploads/" + filename, movement);
                         }
                         else
                             StatusLabel.Text = "Upload status: The file has to be less than 1000 kb!";
@@ -44,16 +45,16 @@ namespace WebApplication3
                 }
                 catch (Exception ex)
                 {
-                    StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                    StatusLabel.Text = "Upload status: The file could not be uploaded: " + ex.Message;
                 }
             }
         }
 
 
-        protected void sendToDB(string fpath)
+        protected void sendToDB(string fpath, Boolean movement)
         {
-            String sqlImagesInsert = "INSERT INTO images (datetime, imagepath) VALUES (now(), ?filepath);";
-            String sqlLatestInsert = "UPDATE latest SET datetime=now(), imagepath=?filepath WHERE ID=1;";
+            String sqlImagesInsert = "INSERT INTO images (datetime, imagepath, movement) VALUES (now(), ?filepath, ?movement);";
+            String sqlLatestInsert = "UPDATE latest SET datetime=now(), imagepath=?filepath, movement=?movement WHERE ID=1;";
 
             using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
             {
@@ -63,11 +64,13 @@ namespace WebApplication3
                     using (MySqlCommand command1 = new MySqlCommand(sqlImagesInsert, connection))
                     {
                         command1.Parameters.Add("?filepath", MySqlDbType.VarChar).Value = fpath;
+                        command1.Parameters.Add("?movement", MySqlDbType.Bit).Value = movement;
                         command1.ExecuteNonQuery();
                     }
                     using (MySqlCommand command2 = new MySqlCommand(sqlLatestInsert, connection))
                     {
                         command2.Parameters.Add("?filepath", MySqlDbType.VarChar).Value = fpath;
+                        command2.Parameters.Add("?movement", MySqlDbType.Bit).Value = movement;
                         command2.ExecuteNonQuery();
                     }
                 }

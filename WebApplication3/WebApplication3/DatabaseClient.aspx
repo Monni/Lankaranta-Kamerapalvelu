@@ -11,6 +11,11 @@
 
     <form id="form" runat="server">
     <asp:FileUpload id="FileUploadControl" runat="server" />
+        <br /><br />
+    <asp:RadioButtonList ID="movementRadioButton" runat="server">
+        <asp:ListItem Value="false" Text="Ei liikettä" Selected="True"></asp:ListItem>
+        <asp:ListItem Value="true" Text="Liikettä"></asp:ListItem>
+    </asp:RadioButtonList>
     <asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
     <br /><br />
     <asp:Label runat="server" id="StatusLabel" text="Upload status: " />

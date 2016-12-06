@@ -197,6 +197,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Backend.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="DatabaseClient.aspx.cs">
       <DependentUpon>DatabaseClient.aspx</DependentUpon>

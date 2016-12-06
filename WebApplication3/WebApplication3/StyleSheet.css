@@ -2,6 +2,12 @@
     margin:0; /* This is used to reset any browser-default margins */
 }
 
+h1, h2 {
+    display: inline;
+    vertical-align:baseline;
+    line-height:2;
+}
+
 div.wrapper {
     width: 99vw;
     height: 97vh;

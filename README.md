@@ -1,6 +1,6 @@
 # Lankaranta kamerapalvelu
 ## Tietoa ohjelmasta
-Ohjelmaa on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
+Palvelu on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
 Päätelaitteeksi rakennetaan tablettimainen, pöydällä pidettävä laite, mikä käynnistyessään yhdistää automaattisesti projektia pyörittävälle palvelimelle kokoruutunäkymässä. Ohjelman käyttöliittymä on suunniteltu skaalautumaan kyseiselle päätelaitteelle.
 
 ### Pääkäyttöliittymä
@@ -26,6 +26,7 @@ Kuvat voi lähettää manuaalisesti tietokantaan ja lisätä samalla tieto, onko
 ### Toteuttamatta jääneet toiminnalliset vaatimukset
 * Kuvien nouto valitun päivämäärän mukaan
 * Indikaattori näyttämään loppukäyttäjälle, onko kamera verkossa
+* Kuvalistan selaus raahaamalla
 
 ### Ei-toiminnalliset vaatimukset, reunaehdot
 * Käyttäjän salasanaton todennus (token?)
@@ -38,8 +39,8 @@ Ohjelmisto on toteutettu tarpeeseen ja vaikka ollen jo käyttökuntoinen loppuk�
 ## Asennus
 ### MySQL
 Ohjelmiston kuvien hallinnointi tapahtuu MySQL tietokannassa. Tätä varten tietokanta on asennettava.
-*  (Asennusohjeet Linuxille) [https://www.linux.fi/wiki/MySQL:n_k%C3%A4ytt%C3%B6%C3%B6notto]
-*  (Asennusohjeet Windowsille) [http://dev.mysql.com/doc/refman/5.7/en/windows-installation.html]
+* [Asennusohjeet Linuxille](https://www.linux.fi/wiki/MySQL:n_k%C3%A4ytt%C3%B6%C3%B6notto)
+* [Asennusohjeet Windowsille](http://dev.mysql.com/doc/refman/5.7/en/windows-installation.html)
 
 #### Käyttöönotto
 Kirjaudu sisään MySQL -ohjelmaan pääkäyttäjänä (root)

@@ -4,6 +4,7 @@
 Ohjelmiston kuvien hallinnointi tapahtuu MySQL tietokannassa. Tätä varten tietokanta on asennettava.
 * [https://www.linux.fi/wiki/MySQL:n_k%C3%A4ytt%C3%B6%C3%B6notto] (Asennusohjeet Linuxille)
 * [http://dev.mysql.com/doc/refman/5.7/en/windows-installation.html] (Asennusohjeet Windowsille)
+
 #### Käyttöönotto
 Kirjaudu sisään MySQL -ohjelmaan pääkäyttäjänä (root)
 ```

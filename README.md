@@ -2,8 +2,8 @@
 ## Asennus
 ### MySQL
 Ohjelmiston kuvien hallinnointi tapahtuu MySQL tietokannassa. Tätä varten tietokanta on asennettava.
-* [https://www.linux.fi/wiki/MySQL:n_k%C3%A4ytt%C3%B6%C3%B6notto] (Asennusohjeet Linuxille)
-* [http://dev.mysql.com/doc/refman/5.7/en/windows-installation.html] (Asennusohjeet Windowsille)
+*  (Asennusohjeet Linuxille) [https://www.linux.fi/wiki/MySQL:n_k%C3%A4ytt%C3%B6%C3%B6notto]
+*  (Asennusohjeet Windowsille) [http://dev.mysql.com/doc/refman/5.7/en/windows-installation.html]
 
 #### Käyttöönotto
 Kirjaudu sisään MySQL -ohjelmaan pääkäyttäjänä (root)
@@ -70,20 +70,13 @@ imagepath varchar(255),
 movement boolean
 )
 ```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
+Tämän jälkeen siirry projektin web.configiin, missä muuta connectionStringsin sisältä löytyvät kentät "user id" sekä "password" vastaamaan tietokantaa luodessa syötettyjä tietoja.
 
+Tietokanta ja tietokantayhteys ovat nyt valmiita käytettäväksi. 
+#### Testidatan lisäys tietokantaan
+Käynnistä projekti haluamallasi selaimella ja avaa web form nimeltään DatabaseClient.aspx.
+Sivulle aukeaa client, millä lähetetään kuvat muine tietoineen tietokantaan. Klikkaa painiketta "Browse..." ja navigoi projektin juuresta löytyvään "Demo_pictures" -kansioon. Lähetä formilla kansiosta löytyvät kuvat tietokantaan. Demokuvissa voit itse määritellä onko kuvissa havaittu liikettä.
 
-
-
-### Konfiguroitavat asiat
+## Tietoa ohjelmasta
+Ohjelmaa on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
+Päätelaitteeksi rakennetaan tablettimainen, pöydällä pidettävä laite, mikä käynnistyessään yhdistää automaattisesti projektia pyörittävälle palvelimelle kokoruutunäkymässä. Ohjelman käyttöliittymä on suunniteltu skaalautumaan kyseiselle päätelaitteelle.

@@ -1,4 +1,34 @@
 # Lankaranta kamerapalvelu
+## Tietoa ohjelmasta
+Ohjelmaa on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
+Päätelaitteeksi rakennetaan tablettimainen, pöydällä pidettävä laite, mikä käynnistyessään yhdistää automaattisesti projektia pyörittävälle palvelimelle kokoruutunäkymässä. Ohjelman käyttöliittymä on suunniteltu skaalautumaan kyseiselle päätelaitteelle.
+
+!(https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo2.JPG)[https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/Demo2.JPG]
+
+!(https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo1.JPG)[https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo1.JPG]
+
+### Toteutetut toiminnalliset vaatimukset
+* Päälle- ja pois päältä kytkettävä Live -tila, milloin päälläollessaan noudetaan uusimmat kuvat kameralta lähetysnopeuden mukaan
+* Kuvatietojen ja sijaintien nouto tietokannalta
+* Kaikkien kuvien nouto
+* Kuvien nouto, missä liikettä on havaittu
+* Kuvien nouto, missä liikettä ei ole havaittu
+* Noudettujen kuvien katselmointi
+* Yksittäisen kuvan valitseminen ja poisto tietokannasta
+* Yksittäisen kuvan valitseminen ja lähetys haluttuihin sähköposteihin
+
+### Toteuttamatta jääneet toiminnalliset vaatimukset
+* Kuvien nouto valitun päivämäärän mukaan
+* Indikaattori näyttämään loppukäyttäjälle, onko kamera verkossa
+
+### Ei-toiminnalliset vaatimukset, reunaehdot
+* Käyttäjän salasanaton todennus (token?)
+* Useamman käyttäjän yhtäaikainen tuki, maksimissaan viidelle yhtäaikaiselle sisäänkirjautumiselle
+* Kuvan automaattinen lähetys sähköposteihin, jos liikettä havaittu
+
+### Jatkokehitys
+Ohjelmisto on toteutettu tarpeeseen ja vaikka ollen jo käyttökuntoinen loppukäyttäjälle on tietoturvapuoli saatava ensin kuntoon. Näyttöpääte tulisi saada autentikoitua (kuvat ei kaikille) ilman salasanaa käytön helppouden vuoksi. Seuraavina toissijaisina kehitysaiheina tulee toteuttamatta jääneet toiminnalliset vaatimukset sekä käyttöliittymän viilaaminen "kaupallisemmaksi".
+
 ## Asennus
 ### MySQL
 Ohjelmiston kuvien hallinnointi tapahtuu MySQL tietokannassa. Tätä varten tietokanta on asennettava.
@@ -76,7 +106,3 @@ Tietokanta ja tietokantayhteys ovat nyt valmiita käytettäväksi.
 #### Testidatan lisäys tietokantaan
 Käynnistä projekti haluamallasi selaimella ja avaa web form nimeltään DatabaseClient.aspx.
 Sivulle aukeaa client, millä lähetetään kuvat muine tietoineen tietokantaan. Klikkaa painiketta "Browse..." ja navigoi projektin juuresta löytyvään "Demo_pictures" -kansioon. Lähetä formilla kansiosta löytyvät kuvat tietokantaan. Demokuvissa voit itse määritellä onko kuvissa havaittu liikettä.
-
-## Tietoa ohjelmasta
-Ohjelmaa on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
-Päätelaitteeksi rakennetaan tablettimainen, pöydällä pidettävä laite, mikä käynnistyessään yhdistää automaattisesti projektia pyörittävälle palvelimelle kokoruutunäkymässä. Ohjelman käyttöliittymä on suunniteltu skaalautumaan kyseiselle päätelaitteelle.

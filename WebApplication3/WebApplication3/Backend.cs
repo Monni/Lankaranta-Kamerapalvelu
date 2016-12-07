@@ -14,8 +14,7 @@ namespace WebApplication3
     public class Backend
     {
 
-
-
+        // Get datatable from database (int if movement wanted)
         public DataTable getDataTableFromDBImages(int movement)
         {
             MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
@@ -40,7 +39,7 @@ namespace WebApplication3
             {
                 command.CommandText = sqlcommandNoMovement;
             }
-
+            // Get image data from lankaranta.latest
             using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
             {
                 try
@@ -59,13 +58,15 @@ namespace WebApplication3
                 {
                     connection.Close();
                 }
-               
+
             }
+            // return fetched datatable
             return dataset.Tables[0];
         }
 
 
 
+        // Get data of latest image from database
         public DataTable getImagepathFromDBLatest()
         {
             // SQL-command
@@ -97,6 +98,7 @@ namespace WebApplication3
                     datatable = dataset.Tables[0];
                 }
             }
+            // return fetched datatable
             return datatable;
         }
 

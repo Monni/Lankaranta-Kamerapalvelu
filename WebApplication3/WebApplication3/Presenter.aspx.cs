@@ -17,8 +17,8 @@ namespace WebApplication3
         Backend backend = new Backend();
         DataSet ds = new DataSet();
         MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
-       // System.Timers.Timer messageTimer = new System.Timers.Timer();
 
+        // Is live-mode selected?
         bool liveImageBtnSelected;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -54,8 +54,10 @@ namespace WebApplication3
         {
             if ((ViewState["selectedImageID"] != null) && ViewState["selectedImageImagepath"] != null)
             {
+                // Get imagedata from ViewState
                 int id = Int32.Parse(ViewState["selectedImageID"].ToString());
                 string imagepath = ViewState["selectedImageImagepath"].ToString();
+                // Make deletion call to backend
                 bool deleted = backend.delImageFromDB(id, imagepath);
                 // If deletion succeeds
                 if (deleted)
@@ -97,10 +99,13 @@ namespace WebApplication3
 
 
 
+        // What happens when selection changes in gridview
         protected void gridView_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Find selected row
             foreach (GridViewRow row in gridView.Rows)
             {
+                // When selected row found
                 if (row.RowIndex == gridView.SelectedIndex)
                 {
                     row.BackColor = Color.Green;
@@ -143,6 +148,7 @@ namespace WebApplication3
         
 
 
+        // What happens when hovering mouse over row
         protected void gridView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -193,9 +199,10 @@ namespace WebApplication3
 
 
 
-        // If needed to call programmatically
+        // Updates live-image. Can be called from timer or programmatically
         protected void Tick()
         {
+            // Get datatable from backend(from db)
             DataTable imagedata = backend.getImagepathFromDBLatest();
             // Also refresh gridview
             populateGridview(Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value));
@@ -205,6 +212,7 @@ namespace WebApplication3
             bool movement = Boolean.Parse(imagedata.Rows[0]["movement"].ToString());
 
             mainImage.ImageUrl = imagepath;
+            // Set datetime next to title
             sendTitleDatetime(datetime);
 
             // Save selection data
@@ -224,6 +232,7 @@ namespace WebApplication3
         // Toggle live -mode on/off
         protected void toggleLiveMode()
         {
+            // Check if liveImageBtn already selected or not
             if (!liveImageBtnSelected)
             {
                 liveImageBtnSelected = true;
@@ -287,20 +296,21 @@ namespace WebApplication3
 
 
 
-
+        // Radio button control in the bottom middle section
         protected void middlePanelRB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Check which button is pressed
             int mode = Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value);
 
             if (mode == 0)
             {
-                populateGridview(0);
+                populateGridview(0); // If all images selected
             } else if (mode == 1)
             {
-                populateGridview(1);
+                populateGridview(1); // If images with movement selected
             } else if (mode == 2)
             {
-                populateGridview(2);
+                populateGridview(2); // If images without movement selected
             } else
             {
                 sendTimedMessage("Jotain meni pieleen..");

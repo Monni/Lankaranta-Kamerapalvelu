@@ -124,3 +124,6 @@ Tietokanta ja tietokantayhteys ovat nyt valmiita käytettäväksi.
 #### Testidatan lisäys tietokantaan
 Käynnistä projekti haluamallasi selaimella ja avaa web form nimeltään DatabaseClient.aspx.
 Sivulle aukeaa client, millä lähetetään kuvat muine tietoineen tietokantaan. Klikkaa painiketta "Browse..." ja navigoi projektin juuresta löytyvään "Demo_pictures" -kansioon. Lähetä formilla kansiosta löytyvät kuvat tietokantaan. Demokuvissa voit itse määritellä onko kuvissa havaittu liikettä.
+
+### SMTP
+Jotta ohjelma voi lähettää sähköpostia, on halutun sähköpostipalvelimen SMTP-asetukset määriteltävä backend.cs-tiedostoon sendSelectedImageToEmail -metodin sisään. Hae valitsemasi palveluntarjoajan SMTP-asetukset internetista ja muuta tiedot smtpClient-nimisen muuttujan sisään. Tiedot ovat selkeästi esillä koodissa.

@@ -66,9 +66,10 @@ namespace WebApplication3
 
 
 
-        public string getImagepathFromDBLatest()
+        public DataTable getImagepathFromDBLatest()
         {
             MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
+            DataTable datatable;
             // This returns imagepath to latest image
             string imagepath = "";
             string sqlcommand = "SELECT * FROM `lankaranta`.`latest`;";
@@ -94,10 +95,10 @@ namespace WebApplication3
                 finally
                 {
                     connection.Close();
-                    imagepath = dataset.Tables[0].Rows[0]["imagepath"].ToString();
+                    datatable = dataset.Tables[0];
                 }
             }
-            return imagepath;
+            return datatable;
         }
 
 

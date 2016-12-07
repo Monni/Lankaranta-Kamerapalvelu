@@ -22,17 +22,19 @@ namespace WebApplication3
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            // This happens when page loaded for the first time
             if (!IsPostBack)
             {
+                // Make Live-mode selected on first page load
+                liveImageBtnSelected = true;
+                ViewState["liveImageBtnSelected"] = "true";
+                liveImageBtn.BackColor = Color.Green;
 
-                // Populate central image with newest picture
-                string imagepath = backend.getImagepathFromDBLatest();
-                mainImage.ImageUrl = imagepath;
+                // Populate central image and datetime with latest image data
+                Tick();
 
                 // Populate gridview on the right with every picture
-                gridView.DataSource = backend.getDataTableFromDBImages(0);
-                gridView.DataBind();
+                populateGridview(0);
             }
             // Check the state of live-button and save to boolean
             if (ViewState["liveImageBtnSelected"] != null)
@@ -62,8 +64,7 @@ namespace WebApplication3
         // Get all pictures regardless of movement
         protected void allImageBtn_Click(object sender, EventArgs e)      
         {
-            gridView.DataSource = backend.getDataTableFromDBImages(0);
-            gridView.DataBind();
+            populateGridview(0);
         }
 
 
@@ -71,8 +72,7 @@ namespace WebApplication3
         // Get pictures where movement detected
         protected void movementImageBtn_Click(object sender, EventArgs e)
         {
-            gridView.DataSource = backend.getDataTableFromDBImages(1);
-            gridView.DataBind();
+            populateGridview(1);
         }
 
 
@@ -80,8 +80,7 @@ namespace WebApplication3
         // Get pictures where no movement detected
         protected void noMovementImageBtn_Click(object sender, EventArgs e)
         {
-            gridView.DataSource = backend.getDataTableFromDBImages(2);
-            gridView.DataBind();
+            populateGridview(2);
         }
 
 
@@ -151,8 +150,9 @@ namespace WebApplication3
         // If needed to call programmatically
         protected void Tick()
         {
-            string imagepath = backend.getImagepathFromDBLatest();
-            mainImage.ImageUrl = imagepath;
+            DataTable imagedata = backend.getImagepathFromDBLatest();
+            mainImage.ImageUrl = imagedata.Rows[0]["imagepath"].ToString();
+            TitleDatetime.Text = imagedata.Rows[0]["datetime"].ToString();
         }
         
 
@@ -197,9 +197,16 @@ namespace WebApplication3
 
         }
 
-        protected void imgSelect_Click(object sender, ImageClickEventArgs e)
-        {
 
+
+        // Function used to show data in gridview
+        protected void populateGridview(int mode)
+        {
+            gridView.DataSource = backend.getDataTableFromDBImages(mode);
+            gridView.DataBind();
         }
+
+
+
     }
 }

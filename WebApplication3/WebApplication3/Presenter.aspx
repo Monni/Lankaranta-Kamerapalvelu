@@ -47,7 +47,7 @@
             
             <asp:TemplateField Visible="false">
                 <ItemTemplate>
-                    <asp:ImageButton ID="imgSelect" OnClick="imgSelect_Click" runat="server" Visible="false" CommandName="Select" />
+                    <asp:ImageButton ID="imgSelect" runat="server" Visible="false" CommandName="Select" />
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:ButtonField CommandName="Select" ItemStyle-Width="0"  />
@@ -59,10 +59,36 @@
 
 
 <asp:Content ID="Content4" ContentPlaceHolderID="ContentPlaceHolder3" runat="server">
-    <asp:Button CssClass="mybtn" runat="server" ID="liveImageBtn" Text="Live" OnClick="liveImageBtn_Click" />
-    <asp:Button CssClass="mybtn" runat="server" ID="allImageBtn" Text="Näytä kaikki kuvat" OnClick="allImageBtn_Click" />
-    <asp:Button CssClass="mybtn" runat="server" ID="movementImageBtn" Text="Näytä kuvat, missä liikettä" OnClick="movementImageBtn_Click" />
-    <asp:Button CssClass="mybtn" runat="server" ID="noMovementImageBtn" Text="Näytä kuvat, missä ei liikettä" OnClick="noMovementImageBtn_Click" />
-    <asp:Button CssClass="mybtn" runat="server" ID="delImageBtn" Text="Poista valittu kuva" OnClick="delImageBtn_Click" />
-    <asp:Button CssClass="mybtn" runat="server" ID="sendEmailBtn" Text="Lähetä sähköpostiin" OnClick="sendEmailBtn_Click" />
+    
+    <div class="btnPanelLeft">
+        <asp:Button CssClass="livebtn" runat="server" ID="liveImageBtn" Text="Live" OnClick="liveImageBtn_Click" />
+    </div>
+    
+    
+    <div class="btnPanelMiddle">
+        <div>
+            <h4>Näytä kuvat</h4>
+        </div>
+        <div>
+            <asp:Button CssClass="mybtn" runat="server" ID="allImageBtn" Text="Kaikki" OnClick="allImageBtn_Click" />
+            <asp:Button CssClass="mybtn" runat="server" ID="movementImageBtn" Text="Liikettä havaittu" OnClick="movementImageBtn_Click" />
+            <asp:Button CssClass="mybtn" runat="server" ID="noMovementImageBtn" Text="Ei liikettä" OnClick="noMovementImageBtn_Click" />
+        </div>
+        
+    </div>
+        
+    <div class="btnPanelRight">
+        <div>
+            <h4>Valitun kuvan toiminnot</h4>
+        </div>
+        <div>
+            <asp:Button CssClass="smallbtn" runat="server" ID="delImageBtn" Text="Poista" OnClick="delImageBtn_Click" />
+            <asp:Button CssClass="smallbtn" runat="server" ID="sendEmailBtn" Text="Lähetä sähköpostiin" OnClick="sendEmailBtn_Click" />
+        </div>
+            
+    </div>
+
+
+
+    
 </asp:Content>

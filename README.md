@@ -3,9 +3,15 @@
 Ohjelmaa on toteutettu tarpeesta luoda toimiva ja luotettava valvontakameraratkaisu nykyisen internetiin kytketyn, vaihtelevasti toimivan, riistakameran vastineeksi. Ohjelman tarkoitus on taltioida valvontakameralta saapuvat kuvat ja tallentaa näiden tiedot tietokantaan, minkä kautta niitä on helppo hallinnoida ja lähettää eteenpäin valittuihin sähköposteihin.
 Päätelaitteeksi rakennetaan tablettimainen, pöydällä pidettävä laite, mikä käynnistyessään yhdistää automaattisesti projektia pyörittävälle palvelimelle kokoruutunäkymässä. Ohjelman käyttöliittymä on suunniteltu skaalautumaan kyseiselle päätelaitteelle.
 
-!(https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo2.JPG)[https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/Demo2.JPG]
+### Pääkäyttöliittymä
+![https://raw.githubusercontent.com/Monni/aspnet-project/master/WebApplication3/WebApplication3/demo2.JPG](https://raw.githubusercontent.com/Monni/aspnet-project/master/WebApplication3/WebApplication3/demo2.JPG)
+Live-napista voidaan päättää, näytetäänkö viimeisimmät kuvat jatkuvalla syötteellä.
+Keskimmäisellä, kolmen napin ryhmällä voidaan päättää minkätyyppisiä kuvia halutaan näyttää.
+Oikean reunan listasta voidaan valita yksittäisiä kuvia katselmoitavaksi ja joko poistettavaksi tai edelleenlähetettäväksi. Valitun kuvan komennot oikeassa alareunassa
 
-!(https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo1.JPG)[https://github.com/Monni/aspnet-project/tree/master/WebApplication3/WebApplication3/demo1.JPG]
+### Kuvien lähetys tietokantaan
+![https://raw.githubusercontent.com/Monni/aspnet-project/master/WebApplication3/WebApplication3/demo1.JPG](https://raw.githubusercontent.com/Monni/aspnet-project/master/WebApplication3/WebApplication3/demo1.JPG)
+Kuvat voi lähettää manuaalisesti tietokantaan ja lisätä samalla tieto, onko kuvassa havaittu liikettä. Kameralaite valmistuessaan tulee lähettämään kuvat tietokantaan automaattisesti liiketietoineen.
 
 ### Toteutetut toiminnalliset vaatimukset
 * Päälle- ja pois päältä kytkettävä Live -tila, milloin päälläollessaan noudetaan uusimmat kuvat kameralta lähetysnopeuden mukaan

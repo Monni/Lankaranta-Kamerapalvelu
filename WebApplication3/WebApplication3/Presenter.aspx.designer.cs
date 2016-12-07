@@ -31,6 +31,24 @@ namespace WebApplication3 {
         protected global::System.Web.UI.WebControls.Label TitleDatetime;
         
         /// <summary>
+        /// MessageTimer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer MessageTimer;
+        
+        /// <summary>
+        /// timedMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label timedMessage;
+        
+        /// <summary>
         /// msg control.
         /// </summary>
         /// <remarks>
@@ -103,31 +121,13 @@ namespace WebApplication3 {
         protected global::System.Web.UI.WebControls.Button liveImageBtn;
         
         /// <summary>
-        /// allImageBtn control.
+        /// middlePanelRadiobuttonlist control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button allImageBtn;
-        
-        /// <summary>
-        /// movementImageBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button movementImageBtn;
-        
-        /// <summary>
-        /// noMovementImageBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button noMovementImageBtn;
+        protected global::System.Web.UI.WebControls.RadioButtonList middlePanelRadiobuttonlist;
         
         /// <summary>
         /// delImageBtn control.

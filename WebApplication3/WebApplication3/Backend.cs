@@ -68,19 +68,18 @@ namespace WebApplication3
 
         public DataTable getImagepathFromDBLatest()
         {
-            MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
-            DataTable datatable;
-            // This returns imagepath to latest image
-            string imagepath = "";
+            // SQL-command
             string sqlcommand = "SELECT * FROM `lankaranta`.`latest`;";
+
             MySqlDataAdapter adapter = new MySqlDataAdapter();
-            MySqlCommand command = conn.CreateCommand();
             DataSet dataset = new DataSet();
+            DataTable datatable;
 
             using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
             {
                 try
                 {
+                    MySqlCommand command = connection.CreateCommand();
                     connection.Open();
                     command.CommandText = sqlcommand;
                     adapter.SelectCommand = command;
@@ -104,8 +103,9 @@ namespace WebApplication3
 
 
         // Delete selected image from database
-        public void delImageFromDB(int id, string imagepath)
+        public bool delImageFromDB(int id, string imagepath)
         {
+            bool returnvalue = false;
             string sqlcommand = "DELETE FROM `lankaranta`.`images` WHERE id=?id;";
 
             using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.ConnectionString))
@@ -135,21 +135,29 @@ namespace WebApplication3
                     System.Diagnostics.Debug.WriteLine("ImagePath to delete: " + imagepath);
                     if (System.IO.File.Exists(System.Web.HttpContext.Current.Server.MapPath(imagepath)))
                     {
-                        System.IO.File.Delete(System.Web.HttpContext.Current.Server.MapPath(imagepath));
-                        System.Diagnostics.Debug.WriteLine("File deleted: " + imagepath);
+                        try
+                        {
+                            System.IO.File.Delete(System.Web.HttpContext.Current.Server.MapPath(imagepath));
+                            System.Diagnostics.Debug.WriteLine("File deleted: " + imagepath);
+                        } catch (Exception ex)
+                        {
+                            throw new Exception("Error:", ex);
+                        }                      
                     }
+                    returnvalue = true;
                 }
             }
-
+            return returnvalue;
         }
 
 
 
         // Send selected image to email
-        public void sendSelectedImageToEmail(string datetime, string imagepath, Boolean movement)
+        public bool sendSelectedImageToEmail(string datetime, string imagepath, Boolean movement)
         {
             System.Diagnostics.Debug.WriteLine("Sending email..");
             string movementText = "";
+            bool returnvalue = false;
             if (movement)
             {
                 movementText = "liikettä havaittu";
@@ -185,10 +193,13 @@ namespace WebApplication3
                 // Send the email via SmtpClient
                 smtpClient.Send(mailMessage);
                 System.Diagnostics.Debug.WriteLine("Email sent!");
+                returnvalue = true;
             } catch (Exception ex)
             {
-                throw new Exception("Email error:", ex);
+                returnvalue = false;
+                throw new Exception("Email error:", ex);             
             }
+            return returnvalue;
         }
 
 

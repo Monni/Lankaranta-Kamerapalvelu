@@ -6,6 +6,11 @@
 <asp:Content ID="TitleContent" ContentPlaceHolderID="TitlePlaceHolder" runat="server">
     <asp:Label ID="MainTitle" Text="<h1>Lankaranta   </h1>" runat="server"></asp:Label>
     <asp:Label ID="TitleDatetime" Text="" runat="server"></asp:Label>
+    <div class="timedMessage">
+        <asp:Timer id="MessageTimer" runat="server" Interval="3000" OnTick="messageTimer_Tick" Enabled="false" />
+        <asp:Label ID="timedMessage" Text="" runat="server"></asp:Label>
+    </div>
+    
     </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -70,9 +75,13 @@
             <h4>Näytä kuvat</h4>
         </div>
         <div>
-            <asp:Button CssClass="mybtn" runat="server" ID="allImageBtn" Text="Kaikki" OnClick="allImageBtn_Click" />
-            <asp:Button CssClass="mybtn" runat="server" ID="movementImageBtn" Text="Liikettä havaittu" OnClick="movementImageBtn_Click" />
-            <asp:Button CssClass="mybtn" runat="server" ID="noMovementImageBtn" Text="Ei liikettä" OnClick="noMovementImageBtn_Click" />
+           <asp:RadioButtonList runat="server" ID="middlePanelRadiobuttonlist" RepeatDirection="Horizontal" AutoPostBack="true" 
+               OnSelectedIndexChanged="middlePanelRB_SelectedIndexChanged" TextAlign="Right" CssClass="inline-rb">
+               <asp:ListItem Value="0" Selected="True">Kaikki</asp:ListItem>
+               <asp:ListItem Value="1">Liikettä havaittu</asp:ListItem>
+               <asp:ListItem Value="2">Ei liikettä</asp:ListItem>
+           </asp:RadioButtonList>
+
         </div>
         
     </div>

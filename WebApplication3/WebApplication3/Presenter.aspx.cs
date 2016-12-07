@@ -17,11 +17,13 @@ namespace WebApplication3
         Backend backend = new Backend();
         DataSet ds = new DataSet();
         MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.ConnectionString);
+       // System.Timers.Timer messageTimer = new System.Timers.Timer();
 
         bool liveImageBtnSelected;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             // This happens when page loaded for the first time
             if (!IsPostBack)
             {
@@ -54,7 +56,17 @@ namespace WebApplication3
             {
                 int id = Int32.Parse(ViewState["selectedImageID"].ToString());
                 string imagepath = ViewState["selectedImageImagepath"].ToString();
-                backend.delImageFromDB(id, imagepath);
+                bool deleted = backend.delImageFromDB(id, imagepath);
+                // Refresh gridview after deletion
+                populateGridview(Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value));
+                // If deletion succeeds
+                if (deleted)
+                {
+                    sendTimedMessage("Kuva poistettu!");
+                } else
+                {
+                    sendTimedMessage("Poisto epäonnistui!");
+                }
             }
             
         }
@@ -91,8 +103,14 @@ namespace WebApplication3
             {
                 if (row.RowIndex == gridView.SelectedIndex)
                 {
-                    row.BackColor = Color.Aquamarine;
+                    row.BackColor = Color.Green;
                     row.ToolTip = string.Empty;
+
+                    // If live mode is on, disable it
+                    if (liveImageBtnSelected)
+                    {
+                        toggleLiveMode();
+                    }
 
                     int ID = (int) gridView.DataKeys[row.RowIndex].Values["ID"];
                     string datetime = gridView.DataKeys[row.RowIndex].Values["datetime"].ToString();
@@ -101,8 +119,9 @@ namespace WebApplication3
                     // Save selection data
                     setSelectedImage(ID, datetime, imagepath, movement);
 
+                    // Display datetime at the top
                     mainImage.ImageUrl = imagepath;
-                    TitleDatetime.Text = "<h2>" + datetime + "</h2>";
+                    sendTitleDatetime(datetime);
                 } else
                 {
                     row.BackColor = Color.White;
@@ -130,7 +149,6 @@ namespace WebApplication3
             {
                 e.Row.Attributes["onmouseover"] = "this.style.backgroundColor='aquamarine';";
                 e.Row.Attributes["onmouseout"] = "this.style.backgroundColor='white';";
-                e.Row.ToolTip = "Click to select this row";
                 e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(gridView, "Select$" + e.Row.RowIndex);
             }
         }
@@ -146,21 +164,65 @@ namespace WebApplication3
         }
 
 
+        // display desired datetime-message at the right of title
+        protected void sendTitleDatetime(string message)
+        {
+            TitleDatetime.Text = "<h2>" + message + "</h2>";
+        }
+
+
+
+        // display desired message and start timer to remove the message        
+        protected void sendTimedMessage(string message)
+        {
+            // Enable timer
+            MessageTimer.Enabled = true;
+            // Insert desired message to timedMessage -label
+            timedMessage.Text = "<h2>" + message + "</h2>";        
+        }
+
+
+
+        // Called after a desired period of time to remove timed message
+        protected void messageTimer_Tick(object sender, EventArgs e)
+        {
+            timedMessage.Text = "";
+            // Disable timer once tick called
+            MessageTimer.Enabled = false;
+        }
+
+
 
         // If needed to call programmatically
         protected void Tick()
         {
             DataTable imagedata = backend.getImagepathFromDBLatest();
-            mainImage.ImageUrl = imagedata.Rows[0]["imagepath"].ToString();
-            TitleDatetime.Text = imagedata.Rows[0]["datetime"].ToString();
+            int ID = Int32.Parse(imagedata.Rows[0]["ID"].ToString());
+            string datetime = imagedata.Rows[0]["datetime"].ToString();
+            string imagepath = imagedata.Rows[0]["imagepath"].ToString();
+            bool movement = Boolean.Parse(imagedata.Rows[0]["movement"].ToString());
+
+            mainImage.ImageUrl = imagepath;
+            sendTitleDatetime(datetime);
+
+            // Save selection data
+            setSelectedImage(ID, datetime, imagepath, movement);
         }
         
 
 
-        // liveImageBtn clicked, toggle live-state of latest picture
+        // liveImageBtn clicked, call function to toggle live -mode
         protected void liveImageBtn_Click(object sender, EventArgs e)
         {
-            if (!liveImageBtnSelected )
+            toggleLiveMode();
+        }
+
+
+
+        // Toggle live -mode on/off
+        protected void toggleLiveMode()
+        {
+            if (!liveImageBtnSelected)
             {
                 liveImageBtnSelected = true;
                 ViewState["liveImageBtnSelected"] = "true";
@@ -168,7 +230,8 @@ namespace WebApplication3
                 liveImageBtn.BackColor = Color.Green;
                 // Instantly update picture to latest
                 Tick();
-            } else if (liveImageBtnSelected)
+            }
+            else if (liveImageBtnSelected)
             {
                 liveImageBtnSelected = false;
                 ViewState["liveImageBtnSelected"] = "false";
@@ -189,10 +252,18 @@ namespace WebApplication3
                 string datetime = ViewState["selectedImageDatetime"].ToString();
                 string imagepath = ViewState["selectedImageImagepath"].ToString();
                 Boolean movement = Boolean.Parse(ViewState["selectedImageMovement"].ToString());
-                // Call backend -function
-                backend.sendSelectedImageToEmail(datetime, imagepath, movement);
-                
-                
+                // Call backend -function, return value tells if email sent or not.
+                bool emailSent = backend.sendSelectedImageToEmail(datetime, imagepath, movement);
+                if (emailSent)
+                {
+                    sendTimedMessage("Sähköposti lähetetty!");
+                } else if (!emailSent)
+                {
+                    sendTimedMessage("Sähköpostia ei voitu lähettää!");
+                }
+            } else
+            {
+                sendTimedMessage("Kuvaa ei valittu!");
             }
 
         }
@@ -202,11 +273,36 @@ namespace WebApplication3
         // Function used to show data in gridview
         protected void populateGridview(int mode)
         {
-            gridView.DataSource = backend.getDataTableFromDBImages(mode);
+            // Get DataTable from backend
+            DataTable datatable = backend.getDataTableFromDBImages(mode);
+            // Sort DESC by ID
+            datatable.DefaultView.Sort = "ID DESC";
+            // Set datasource
+            gridView.DataSource = datatable;
+            // bind to gridview
             gridView.DataBind();
         }
 
 
 
+
+        protected void middlePanelRB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int mode = Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value);
+
+            if (mode == 0)
+            {
+                populateGridview(0);
+            } else if (mode == 1)
+            {
+                populateGridview(1);
+            } else if (mode == 2)
+            {
+                populateGridview(2);
+            } else
+            {
+                sendTimedMessage("Jotain meni pieleen..");
+            }
+        }
     }
 }

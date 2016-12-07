@@ -76,6 +76,7 @@ namespace WebApplication3
                 }
                 catch (Exception ex)
                 {
+                    throw new Exception("Error:", ex);
                     // Error message here
                 }
                 finally

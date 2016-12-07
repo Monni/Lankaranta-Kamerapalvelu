@@ -37,7 +37,7 @@ Kuvat voi lähettää manuaalisesti tietokantaan ja lisätä samalla tieto, onko
 Satunnaisesti kuvaa poistaessa, tiedoston olemassaolon tarkistus lukitsee tiedoston, eikä sitä tällöin pysty poistamaan lokaalisti, mutta tietokannasta tämä onnistuu. Tapahtuma saattaa jättää "haamutiedostoja" viemään tilaa kiintolevyltä, vaikka tätä ei mistään näe.
 
 ### Mitä on opittu
-Kurssille tultaessa tietämys ASP.NETista sekä C#:sta oli täysi nolla. Projektia tehdessä taidot ovat kehittyneet yleisellä tasolla, joskaan aivan kaikkiin tavoitteisiin ei päästy (asynkroniset funktiot tuottavat suurta päänvaivaa).
+Kurssille tultaessa tietämys ASP.NETista sekä C#:sta oli täysi nolla. Projektia tehdessä taidot ovat kehittyneet yleisellä tasolla, joskaan aivan kaikkiin tavoitteisiin ei päästy. Pääasiassa asynkroniset toiminnot tuottavat suurta päänvaivaa.
 
 ### Jatkokehitys
 Ohjelmisto on toteutettu tarpeeseen ja vaikka ollen jo käyttökuntoinen loppukäyttäjälle on tietoturvapuoli saatava ensin kuntoon. Näyttöpääte tulisi saada autentikoitua (kuvat ei kaikille) ilman salasanaa käytön helppouden vuoksi. Seuraavina toissijaisina kehitysaiheina tulee toteuttamatta jääneet toiminnalliset vaatimukset sekä käyttöliittymän viilaaminen "kaupallisemmaksi".

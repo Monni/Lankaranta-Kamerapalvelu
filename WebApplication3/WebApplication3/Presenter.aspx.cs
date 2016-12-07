@@ -57,12 +57,12 @@ namespace WebApplication3
                 int id = Int32.Parse(ViewState["selectedImageID"].ToString());
                 string imagepath = ViewState["selectedImageImagepath"].ToString();
                 bool deleted = backend.delImageFromDB(id, imagepath);
-                // Refresh gridview after deletion
-                populateGridview(Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value));
                 // If deletion succeeds
                 if (deleted)
                 {
                     sendTimedMessage("Kuva poistettu!");
+                    // Refresh gridview after deletion
+                    populateGridview(Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value));
                 } else
                 {
                     sendTimedMessage("Poisto epäonnistui!");
@@ -197,6 +197,8 @@ namespace WebApplication3
         protected void Tick()
         {
             DataTable imagedata = backend.getImagepathFromDBLatest();
+            // Also refresh gridview
+            populateGridview(Int32.Parse(middlePanelRadiobuttonlist.SelectedItem.Value));
             int ID = Int32.Parse(imagedata.Rows[0]["ID"].ToString());
             string datetime = imagedata.Rows[0]["datetime"].ToString();
             string imagepath = imagedata.Rows[0]["imagepath"].ToString();
